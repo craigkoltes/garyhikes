@@ -3,151 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gary Hikes the AT | Live Tracker</title>
+    <title>AT Trail Tracker</title>
     <style>
-        :root {
-            --at-green: #2d4a22;
-            --at-light-green: #a3b18a;
-            --at-tan: #f0f2f0;
-            --at-dark: #2d3436;
-        }
-
-        body { 
-            margin: 0; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background: var(--at-tan); 
-            color: var(--at-dark); 
-            line-height: 1.6;
-        }
-
-        header { 
-            background: var(--at-green); 
-            color: white; 
-            padding: 3rem 1rem; 
-            text-align: center; 
-            border-bottom: 6px solid var(--at-light-green);
-        }
-
-        h1 { margin: 0; font-size: 2.2rem; letter-spacing: -1px; }
-        header p { opacity: 0.9; margin: 10px 0 0; font-weight: 400; font-size: 1.1rem; }
-
-        .container { 
-            max-width: 1100px; 
-            margin: -40px auto 40px; 
-            padding: 0 20px; 
-        }
-
-        .stats-bar { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-            gap: 15px; 
-            margin-bottom: 25px; 
-        }
-
-        .stat-card { 
-            background: white; 
-            padding: 20px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
-            text-align: center; 
-            border-top: 4px solid var(--at-green);
-        }
-
-        .stat-card strong { 
-            display: block; 
-            color: var(--at-green); 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        .stat-val { font-size: 1.3rem; font-weight: 700; }
-
-        .map-container { 
-            width: 100%; 
-            height: 70vh; 
-            min-height: 500px;
-            background: #fff; 
-            border-radius: 15px; 
-            overflow: hidden; 
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); 
-            border: 1px solid #ddd; 
-        }
-
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f7f6; color: #2d3436; }
+        header { background: #2d4a22; color: white; padding: 1rem; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+        .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; }
+        .map-container { position: relative; width: 100%; height: 70vh; background: #ddd; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 2px solid #2d4a22; }
         iframe { width: 100%; height: 100%; border: none; }
-
-        footer { 
-            text-align: center; 
-            padding: 4rem 1rem; 
-            color: #636e72; 
-            font-size: 0.85rem; 
-        }
-
-        @media (max-width: 600px) {
-            header { padding: 2rem 1rem 4rem; }
-            .map-container { height: 60vh; }
-        }
+        footer { text-align: center; padding: 2rem; font-size: 0.9rem; color: #636e72; }
+        .status-dot { height: 10px; width: 10px; background-color: #00b894; border-radius: 50%; display: inline-block; margin-right: 5px; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>🥾 Gary Hikes the AT</h1>
-    <p>Springer Mountain, GA ➔ Mt. Katahdin, ME (2,198 Miles)</p>
+    <h1>🥾 Appalachian Trail Tracker</h1>
+    <p>Following [Friend's Name]'s Journey: Georgia → Maine</p>
 </header>
 
 <div class="container">
     <div class="stats-bar">
         <div class="stat-card">
-            <strong>Current Status</strong>
-            <div class="stat-val" id="update-time">Locating...</div>
+            <strong>Current Status</strong><br>
+            <span class="status-dot"></span> Active on Trail
         </div>
-
         <div class="stat-card">
-            <strong>Time on Trail</strong>
-            <div class="stat-val" id="days-count">Calculating...</div>
+            <strong>Total Distance</strong><br>
+            ~2,190 Miles
         </div>
-
         <div class="stat-card">
-            <strong>The Goal</strong>
-            <div class="stat-val">Mt. Katahdin, ME</div>
+            <strong>Update Frequency</strong><br>
+            Every 10-30 Minutes
         </div>
     </div>
 
     <div class="map-container">
-        <iframe src="https://share.garmin.com/ggorman"></iframe>
+        <iframe src="https://share.garmin.com/YOUR_FRIENDS_URL"></iframe>
     </div>
 </div>
 
 <footer>
-    <p>Data provided by Garmin inReach Satellite Technology</p>
-    <p>Created with ❤️ for Gary's thru-hike</p>
+    <p>Powered by Garmin inReach & Vercel | Happy Trails!</p>
 </footer>
-
-<script>
-    // START DATE: March 13th, 2026 (Note: Months are 0-indexed, so March is 2)
-    const startDate = new Date(2026, 2, 13); 
-    
-    function updateStats() {
-        const now = new Date();
-        
-        // Update "Status" with today's date
-        document.getElementById('update-time').innerText = "Live " + now.toLocaleDateString();
-
-        // Calculate Days on Trail (Day 1 is the start date)
-        const diffTime = now - startDate;
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-        
-        if (diffDays > 0) {
-            document.getElementById('days-count').innerText = "Day " + diffDays;
-        } else {
-            document.getElementById('days-count').innerText = "Starting Soon!";
-        }
-    }
-
-    updateStats();
-</script>
 
 </body>
 </html>
