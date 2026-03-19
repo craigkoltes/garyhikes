@@ -29,7 +29,7 @@
         }
 
         h1 { margin: 0; font-size: 2.2rem; letter-spacing: -1px; }
-        header p { opacity: 0.9; margin: 10px 0 20px; font-weight: 300; }
+        header p { opacity: 0.9; margin: 10px 0 0; font-weight: 400; font-size: 1.1rem; }
 
         .container { 
             max-width: 1100px; 
@@ -39,7 +39,7 @@
 
         .stats-bar { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
             gap: 15px; 
             margin-bottom: 25px; 
         }
@@ -50,7 +50,7 @@
             border-radius: 12px; 
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
             text-align: center; 
-            border: 1px solid rgba(0,0,0,0.05);
+            border-top: 4px solid var(--at-green);
         }
 
         .stat-card strong { 
@@ -62,10 +62,9 @@
             margin-bottom: 5px;
         }
 
-        .stat-val { font-size: 1.2rem; font-weight: 700; }
+        .stat-val { font-size: 1.3rem; font-weight: 700; }
 
         .map-container { 
-            position: relative; 
             width: 100%; 
             height: 70vh; 
             min-height: 500px;
@@ -77,24 +76,6 @@
         }
 
         iframe { width: 100%; height: 100%; border: none; }
-
-        .btn-share { 
-            background: var(--at-light-green); 
-            color: var(--at-green); 
-            border: none; 
-            padding: 12px 24px; 
-            border-radius: 50px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .btn-share:hover { 
-            transform: translateY(-2px);
-            background: white;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
 
         footer { 
             text-align: center; 
@@ -113,36 +94,25 @@
 
 <header>
     <h1>🥾 Gary Hikes the AT</h1>
-    <p>Live satellite tracking: Georgia ➔ Maine</p>
+    <p>Springer Mountain, GA ➔ Mt. Katahdin, ME (2,198 Miles)</p>
 </header>
+
 <div class="container">
     <div class="stats-bar">
         <div class="stat-card">
             <strong>Current Status</strong>
-            <div class="stat-val" id="update-time">Locating Gary...</div>
+            <div class="stat-val" id="update-time">Locating...</div>
         </div>
+
         <div class="stat-card">
             <strong>Time on Trail</strong>
-            <div class="stat-val" id="days-count">Day 1</div>
+            <div class="stat-val" id="days-count">Calculating...</div>
         </div>
-<div class="stats-container">
-<div class="stats-bar">
-    <div class="stat-card">
-        <strong>Current Status</strong>
-        <div class="stat-val" id="update-time">Live 3/18/2026</div>
-    </div>
-    <div class="stat-card">
-        <strong>Time on Trail</strong>
-        <div class="stat-val" id="days-count">Day 5</div>
-    </div>
-    <div class="stat-card">
-        <strong>The Journey</strong>
-        <div class="stat-val" style="font-size: 0.9rem;">Springer Mtn ➔ Katahdin</div>
-        <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">2,198 Total Miles</div>
-    </div>
-</div>
-    </div>
-</div>
+
+        <div class="stat-card">
+            <strong>The Goal</strong>
+            <div class="stat-val">Mt. Katahdin, ME</div>
+        </div>
     </div>
 
     <div class="map-container">
@@ -156,17 +126,16 @@
 </footer>
 
 <script>
-    // 1. SET THE START DATE HERE (Year, Month Index 0-11, Day)
-    // Example: March 1st, 2026 is (2026, 2, 1)
-    const startDate = new Date(2026, 2, 14); 
+    // START DATE: March 13th, 2026 (Note: Months are 0-indexed, so March is 2)
+    const startDate = new Date(2026, 2, 13); 
     
     function updateStats() {
         const now = new Date();
         
-        // Update "Last Seen" timestamp
+        // Update "Status" with today's date
         document.getElementById('update-time').innerText = "Live " + now.toLocaleDateString();
 
-        // Calculate Days on Trail
+        // Calculate Days on Trail (Day 1 is the start date)
         const diffTime = now - startDate;
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
         
@@ -175,13 +144,6 @@
         } else {
             document.getElementById('days-count').innerText = "Starting Soon!";
         }
-    }
-
-    function copyLink() {
-        navigator.clipboard.writeText(window.location.href);
-        const btn = document.querySelector('.btn-share');
-        btn.innerText = "✅ Copied!";
-        setTimeout(() => { btn.innerText = "🔗 Copy Tracker Link"; }, 2000);
     }
 
     updateStats();
